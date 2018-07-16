@@ -11,6 +11,7 @@ const { State } = require('../state/state');
 
 async function copyAlgorithm() {
   let item = null;
+
   do {
     item = await getPathToCopy();
     if (item) {
