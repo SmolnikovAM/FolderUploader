@@ -3,3 +3,4 @@ logs/
 config/key.js
 copyFromFolder/
 dbxcopy.cmd
+db/dbx_bd.sqlite
