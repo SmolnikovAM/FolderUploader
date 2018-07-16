@@ -1,0 +1,5 @@
+node_modules/
+logs/
+config/key.js
+copyFromFolder/
+dbxcopy.cmd
