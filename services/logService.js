@@ -69,7 +69,7 @@ function logFnSync(fn, args, that) {
     res = fn(...args);
   }
   const { str1, strFs1 } = footer(res);
-  console.log(str + str1);
+  // console.log(str + str1);
   printToFile(strFs + strFs1);
   return res;
 }
@@ -84,7 +84,7 @@ async function logFn(fn, args, that) {
     res = await fn(...args);
   }
   const { str1, strFs1 } = footer(res);
-  console.log(str + str1);
+  // console.log(str + str1);
   printToFile(strFs + strFs1);
   return res;
 }
@@ -97,21 +97,21 @@ function log(...args) {
 
   str += `# ${numAction++} \n`;
 
-  console.log(str);
-  console.log(argsStr.slice(0, 40));
+  // console.log(str);
+  // console.log(argsStr.slice(0, 40));
 
   printToFile(str + argsStr);
 }
 
 function logError(str) {
   const w = `time ${getDate()}\n ${str}`;
-  console.log(w);
+  // console.log(w);
   printToFile(w);
 }
 
 function logGood(str) {
   const w = `time ${getDate()}\n ${str}`;
-  console.log(w);
+  // console.log(w);
   printToFile(w);
 }
 

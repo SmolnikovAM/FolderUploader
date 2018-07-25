@@ -37,19 +37,9 @@ async function getNotCreatedFolders() {
   return folders;
 }
 
-async function changePathStatus({ id, status, errorMsg, hashFs, hashDBX }) {
-  errorMsg = errorMsg || null;
-  const set = {
-    status,
-    errorMsg,
-  };
+async function changePathStatus(options) {
+  const { id, ...set } = options;
 
-  if (hashFs) {
-    set.hashFs = hashFs;
-  }
-  if (hashDBX) {
-    set.hashDBX = hashDBX;
-  }
   return FilePath.update(set, {
     where: {
       id,
@@ -114,9 +104,21 @@ async function getPathToCopy() {
   return item;
 }
 
+function allWorkToNew() {
+  return FilePath.update(
+    { status: NEW },
+    {
+      where: {
+        status: WORK,
+      },
+    },
+  );
+}
+
 module.exports = createLogFunctions({
   insertBulk,
   getNotCreatedFolders,
   changePathStatus,
   getPathToCopy,
+  allWorkToNew,
 });

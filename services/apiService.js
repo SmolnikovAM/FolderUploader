@@ -3,45 +3,51 @@ const {
   fileGetMetadata,
   createDBXFolder,
   uploadToDBX,
-} = require('./dropboxSevice');
+} = require('./dropboxService');
 const { createLogFunctions } = require('./logService');
 const { END, ERROR } = require('../config/constants');
 const { changePathStatus, getPathToCopy } = require('./pathService');
 const { State } = require('../state/state');
 
+function copyGood(response) {
+  if (response) {
+    const { hexDigest, res } = response;
+    changePathStatus({
+      id,
+      status: hexDigest === res.content_hash ? END : NEW,
+      hashFs: hexDigest,
+      hashDBX: res.content_hash,
+      errorMsg: hexDigest === res.content_hash ? '' : 'hash not equal',
+    });
+  } else {
+    changePathStatus({ id, status: ERROR });
+  }
+}
+
+function copyReject(err) {
+  changePathStatus({
+    id,
+    status: ERROR,
+    errorMsg: JSON.stringify(err),
+  });
+}
+
 async function copyAlgorithm() {
   let item = null;
-
   do {
     item = await getPathToCopy();
     if (item) {
       await State.newUploadFilesAwait;
       await State.DBXAwait;
-      const uploadPromise = uploadToDBX(item);
+      const cb = (...set) =>
+        changePathStatus({
+          id,
+          ...set,
+        });
+      const uploadPromise = uploadToDBX(item, cb);
       State.addPath(uploadPromise);
       const { id } = item;
-      uploadPromise
-        .then(response => {
-          if (response) {
-            const { hexDigest, res } = response;
-            changePathStatus({
-              id,
-              status: hexDigest === res.content_hash ? END : NEW,
-              hashFs: hexDigest,
-              hashDBX: res.content_hash,
-              errorMsg: hexDigest === res.content_hash ? '' : 'hash not equal',
-            });
-          } else {
-            changePathStatus({ id, status: ERROR });
-          }
-        })
-        .catch(err => {
-          changePathStatus({
-            id,
-            status: ERROR,
-            errorMsg: JSON.stringify(err),
-          });
-        });
+      uploadPromise.then(copyGood).catch(copyReject);
     }
   } while (item);
   await Promise.all(State.paths.map(({ promise }) => promise));

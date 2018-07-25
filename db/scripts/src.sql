@@ -3,6 +3,7 @@ select
  ,max(pathTo)
 ,count(*)
 ,sum(size)/(1024*1024)
+,sum(offset)/(1024*1024)
 ,min(createdAt)
 ,min(updatedAt)
 from

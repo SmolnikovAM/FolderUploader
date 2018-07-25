@@ -1,9 +1,15 @@
-const MAX_BLOB = 8 * 1000 * 1000;
-const HASH_BLOB_SIZE = 4 * 1024 * 1024;
+const MAX_BLOB = 30 * 1000 * 1000;
+// const MAX_BLOB = 1 * 1000 * 1000; // for test
+// const MAX_BLOB = 5; // for test
+
 const MAX_FILE_SIZE = 150 * 1000 * 1000;
+// const MAX_FILE_SIZE = 2 * 1000 * 1000; // for test
+// const MAX_FILE_SIZE = 10;
+
+const HASH_BLOB_SIZE = 4 * 1024 * 1024;
 const THREADS = 20;
-const MIN_WAIT_TIME = 30000;
-const MAX_FILES_UPLOAD_IN_MOMENT = 10;
+const MIN_WAIT_TIME = 3000;
+const MAX_FILES_UPLOAD_IN_MOMENT = 4;
 
 const ADD_MODE_START = 'ADD_MODE_START';
 const ADD_MODE_PATH_LIST = 'ADD_MODE_PATH_LIST';
